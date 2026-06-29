@@ -37,6 +37,11 @@ import {
   RefreshCw,
   FileDown,
   Zap,
+  Moon,
+  Sun,
+  LogOut, 
+  User,
+  Bell,
 } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area, LineChart, Line } from "recharts";
 
@@ -80,6 +85,16 @@ export default function Dashboard() {
   const [mostraComparativo, setMostraComparativo] = useState(false);
   const [paginaAtual, setPaginaAtual] = useState(1);
   const itensPorPagina = 5;
+
+  // 🚀 ADICIONADO: Função profissional para sair da conta
+  const handleLogout = () => {
+    // Limpa os dados de autenticação (tokens, sessão) salvos no navegador
+    localStorage.removeItem("authToken"); 
+    sessionStorage.clear();
+    
+    // Redireciona o usuário para a tela de login
+    window.location.href = "/login"; 
+  };
 
   // IA states
   const [resumoIA, setResumoIA] = useState<ResumoIA | null>(null);
@@ -445,50 +460,56 @@ export default function Dashboard() {
         </div>
       </header>
 
-      {sidebarOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden">
-          <div className="absolute inset-0 bg-black/60" onClick={() => setSidebarOpen(false)} />
-          <aside className="absolute left-0 top-0 bottom-0 w-72 bg-[#1e293b] p-6 flex flex-col gap-6 border-r border-slate-800 overflow-y-auto">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-4">
-              <div className="flex items-center gap-2"><LayoutDashboard className="text-blue-500 w-5 h-5" /><h2 className="text-sm font-black tracking-wider text-white uppercase">PRICE-INTEL</h2></div>
-              <button onClick={() => setSidebarOpen(false)} className="p-1.5 rounded-lg bg-slate-800 text-slate-400 hover:bg-slate-700"><X size={16} /></button>
-            </div>
-            <SidebarContent historicoCenarios={historicoCenarios} currentScenario={currentScenario} setCurrentScenario={setCurrentScenario} setPaginaAtual={setPaginaAtual} setSidebarOpen={setSidebarOpen} />
-          </aside>
+    {sidebarOpen && (
+  <div className="fixed inset-0 z-50 lg:hidden">
+    <div className="absolute inset-0 bg-black/60" onClick={() => setSidebarOpen(false)} />
+    <aside className="absolute left-0 top-0 bottom-0 w-72 bg-[#1e293b] p-6 flex flex-col gap-6 border-r border-slate-800 overflow-y-auto">
+      <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+        <div className="flex items-center gap-2">
+          <LayoutDashboard className="text-blue-500 w-5 h-5" />
+          <h2 className="text-sm font-black tracking-wider text-white uppercase">PRICE-INTEL</h2>
         </div>
-      )}
+        <button onClick={() => setSidebarOpen(false)} className="p-1.5 rounded-lg bg-slate-800 text-slate-400 hover:bg-slate-700">
+          <X size={16} />
+        </button>
+      </div>
+      
+      {/* 🚀 AQUI: Adicionado a propriedade handleLogout */}
+      <SidebarContent 
+        historicoCenarios={historicoCenarios} 
+        currentScenario={currentScenario} 
+        setCurrentScenario={setCurrentScenario} 
+        setPaginaAtual={setPaginaAtual} 
+        setSidebarOpen={setSidebarOpen} 
+        handleLogout={handleLogout} 
+      />
+    </aside>
+  </div>
+)}
 
       <div className="flex">
-        <aside className="hidden lg:flex w-64 bg-[#1e293b]/40 m-4 rounded-2xl p-6 flex-col gap-6 border border-slate-800/80 sticky top-4 h-[calc(100vh-2rem)] overflow-y-auto">
-          <div className="flex flex-col gap-1 border-b border-slate-800 pb-4">
-            <div className="flex items-center gap-2"><LayoutDashboard className="text-blue-500 w-6 h-6" /><h2 className="text-base font-black tracking-wider text-white uppercase">PRICE-INTEL</h2></div>
-            <span className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Market Intelligence Panel</span>
-          </div>
-          <SidebarContent historicoCenarios={historicoCenarios} currentScenario={currentScenario} setCurrentScenario={setCurrentScenario} setPaginaAtual={setPaginaAtual} setSidebarOpen={setSidebarOpen} />
-        </aside>
+  <aside className="hidden lg:flex w-64 bg-[#1e293b]/40 m-4 rounded-2xl p-6 flex-col gap-6 border border-slate-800/80 sticky top-4 h-[calc(100vh-2rem)] overflow-y-auto">
+    <div className="flex flex-col gap-1 border-b border-slate-800 pb-4">
+      <div className="flex items-center gap-2">
+        <LayoutDashboard className="text-blue-500 w-6 h-6" />
+        <h2 className="text-base font-black tracking-wider text-white uppercase">PRICE-INTEL</h2>
+      </div>
+      <span className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Market Intelligence Panel</span>
+    </div>
+    
+    {/* 🚀 AQUI: Adicionado a propriedade handleLogout para desktops */}
+    <SidebarContent 
+      historicoCenarios={historicoCenarios} 
+      currentScenario={currentScenario} 
+      setCurrentScenario={setCurrentScenario} 
+      setPaginaAtual={setPaginaAtual} 
+      setSidebarOpen={setSidebarOpen} 
+      handleLogout={handleLogout} 
+    />
+  </aside>
 
-        <main className="flex-1 p-4 lg:p-8 overflow-y-auto min-w-0">
-
-          <header className="hidden lg:flex mb-8 justify-between items-start">
-            <div>
-              <h1 className="text-2xl font-black text-white tracking-tight">Mercado de Eletrodomésticos — Linha Branca & Ar Condicionado</h1>
-              <p className="text-sm text-slate-400 mt-1">Visão geral do mercado monitorado no Brasil · Junho de 2026</p>
-            </div>
-            <span className={`px-3 py-1 border rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 shrink-0 ml-4 ${totalRegistros > 0 ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" : "bg-red-500/10 text-red-400 border-red-500/20"}`}>
-              <span className={`w-2 h-2 rounded-full ${totalRegistros > 0 ? "bg-emerald-400 animate-pulse" : "bg-red-400"}`} />{totalRegistros > 0 ? "Backend Conectado" : "Backend Offline"}
-            </span>
-          </header>
-
-          <div className="lg:hidden mb-5">
-            <h1 className="text-lg font-black text-white tracking-tight leading-tight">Mercado de Eletrodomésticos</h1>
-            <p className="text-xs text-slate-400 mt-0.5">Linha Branca & Ar Condicionado · Jun/2026</p>
-          </div>
-
-          {totalRegistros === 0 && (
-            <div className="mb-6 p-4 bg-amber-500/10 border border-amber-500/20 rounded-xl text-amber-300 text-xs font-medium">
-              ⚠️ Não foi possível conectar ao backend. Verifique se o servidor Express está rodando.
-            </div>
-          )}
+  <main className="flex-1 p-4 lg:p-8 overflow-y-auto min-w-0">
+    {/* ... resto do seu código main ... */}
 
           {/* ── RESUMO EXECUTIVO IA ── */}
           {(resumoIA || carregandoResumo) && (
@@ -894,15 +915,24 @@ export default function Dashboard() {
   );
 }
 
-function SidebarContent({ historicoCenarios, currentScenario, setCurrentScenario, setPaginaAtual, setSidebarOpen }: any) {
+function SidebarContent({ historicoCenarios, currentScenario, setCurrentScenario, setPaginaAtual, setSidebarOpen, handleLogout }: any) {
   return (
     <>
       <div className="flex flex-col gap-2 flex-1 overflow-y-auto">
-        <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider flex items-center gap-1 mb-2"><History size={12} className="text-blue-400" /> Cenários ({historicoCenarios.length})</span>
-        {historicoCenarios.length === 0 ? (<span className="text-[11px] text-slate-600 italic">Nenhum cenário pesquisado ainda.</span>) : (
+        <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider flex items-center gap-1 mb-2">
+          <History size={12} className="text-blue-400" /> Cenários ({historicoCenarios.length})
+        </span>
+        {historicoCenarios.length === 0 ? (
+          <span className="text-[11px] text-slate-600 italic">Nenhum cenário pesquisado ainda.</span>
+        ) : (
           <div className="flex flex-col gap-2">
             {historicoCenarios.map((cen: any, idx: number) => (
-              <button key={idx} type="button" onClick={() => { setCurrentScenario(cen); setPaginaAtual(1); setSidebarOpen(false); }} className={`text-left p-2 rounded-xl border text-[11px] transition-all flex flex-col gap-0.5 ${currentScenario?.id === cen.id ? "bg-blue-600/10 border-blue-500 text-blue-300 font-semibold" : "bg-slate-900/50 border-slate-800 text-slate-400 hover:bg-slate-800"}`}>
+              <button 
+                key={idx} 
+                type="button" 
+                onClick={() => { setCurrentScenario(cen); setPaginaAtual(1); setSidebarOpen(false); }} 
+                className={`text-left p-2 rounded-xl border text-[11px] transition-all flex flex-col gap-0.5 ${currentScenario?.id === cen.id ? "bg-blue-600/10 border-blue-500 text-blue-300 font-semibold" : "bg-slate-900/50 border-slate-800 text-slate-400 hover:bg-slate-800"}`}
+              >
                 <span className="truncate text-white block font-medium">{cen.titulo}</span>
                 <span className="text-[9px] text-slate-500">{cen.timestamp} · {cen.matriz?.length} itens</span>
               </button>
@@ -910,7 +940,22 @@ function SidebarContent({ historicoCenarios, currentScenario, setCurrentScenario
           </div>
         )}
       </div>
-      <div className="mt-auto pt-4 border-t border-slate-800/60 text-[11px] text-slate-500 font-medium">MKT Intel · Brasil<br />Janela: Jun/2026</div>
+
+      {/* 🚀 BOTÃO DE SAIR DA CONTA (Adicionado acima do rodapé) */}
+      <div className="mt-4 pt-3 border-t border-slate-800/60">
+        <button
+          type="button"
+          onClick={handleLogout}
+          className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-[11px] font-medium text-red-400 hover:text-red-300 bg-red-500/5 hover:bg-red-500/10 border border-red-500/10 hover:border-red-500/20 transition-all group"
+        >
+          <LogOut size={14} className="text-red-400 group-hover:translate-x-0.5 transition-transform" />
+          <span>Sair da conta</span>
+        </button>
+      </div>
+
+      <div className="mt-2 text-[11px] text-slate-500 font-medium">
+        MKT Intel · Brasil<br />Janela: Jun/2026
+      </div>
     </>
   );
 }

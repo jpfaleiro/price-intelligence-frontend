@@ -5,11 +5,7 @@ import { createClient } from "@supabase/supabase-js";
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-  {
-    auth: {
-      flowType: "implicit",
-    },
-  }
+  { auth: { flowType: "implicit" } }
 );
 
 export default function LoginPage() {
@@ -17,7 +13,8 @@ export default function LoginPage() {
     await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `http://localhost:3000/auth/callback`,
+        redirectTo: `${window.location.origin}/auth/callback`,
+        scopes: "email profile",
       },
     });
   };
