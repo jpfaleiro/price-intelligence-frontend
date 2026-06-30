@@ -6,14 +6,12 @@ const supabase = getSupabaseClient();
 
 export default function LoginPage() {
   const handleGoogleLogin = async () => {
-    const redirectUrl = typeof window !== "undefined" 
-      ? `${window.location.origin}/auth/callback`
-      : "http://localhost:3000/auth/callback";
-
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+    
     await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: redirectUrl,
+        redirectTo: `${appUrl}/auth/callback`,
       },
     });
   };
