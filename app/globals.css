@@ -1,0 +1,130 @@
+@import "tailwindcss";
+
+/* =========================
+   DESIGN SYSTEM BASE
+========================= */
+
+:root {
+  --background: #0b1220;   /* mais profundo que 0f172a */
+  --foreground: #e2e8f0;
+
+  --primary: #38bdf8;
+  --muted: #94a3b8;
+
+  --card: rgba(15, 23, 42, 0.65);
+  --border: rgba(255, 255, 255, 0.08);
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: Inter, system-ui, Arial, sans-serif;
+
+  /* melhora leitura geral */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* =========================
+   GLASSMORPHISM (REFINADO)
+========================= */
+
+.glass-card {
+  background: var(--card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+
+  border: 1px solid var(--border);
+  border-radius: 16px;
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+
+  transition: all 0.25s ease;
+}
+
+/* hover mais moderno */
+.glass-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(56, 189, 248, 0.25);
+  box-shadow:
+    0 15px 40px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(56, 189, 248, 0.08);
+}
+
+/* =========================
+   TIPOGRAFIA
+========================= */
+
+h1, h2, h3 {
+  letter-spacing: -0.03em;
+}
+
+p {
+  color: var(--muted);
+}
+
+/* =========================
+   SCROLLBAR (BONITA)
+========================= */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.25);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.4);
+}
+
+/* =========================
+   ANIMAÇÕES SUAVES
+========================= */
+
+* {
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+/* fade-in para dashboard */
+.fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================
+   BOTÕES PADRÃO
+========================= */
+
+.btn-primary {
+  background: linear-gradient(135deg, #38bdf8, #2563eb);
+  color: white;
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-weight: 500;
+
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+  filter: brightness(1.1);
+  transform: scale(1.02);
+}
