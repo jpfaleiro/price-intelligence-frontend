@@ -10,11 +10,15 @@ export default function AuthCallback() {
   const router = useRouter();
 
   useEffect(() => {
-    supabase.auth.onAuthStateChange((event, session) => {
+    const { data: listener } = supabase.auth.onAuthStateChange((_event: string, session) => {
       if (session) {
         router.push("/");
       }
     });
+
+    return () => {
+      listener.subscription.unsubscribe();
+    };
   }, [router]);
 
   return (
