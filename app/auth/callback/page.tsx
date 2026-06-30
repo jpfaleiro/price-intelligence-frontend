@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { getSupabaseClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
+import type { Session } from '@supabase/supabase-js';
 
 const supabase = getSupabaseClient();
 
@@ -10,14 +11,16 @@ export default function AuthCallback() {
   const router = useRouter();
 
   useEffect(() => {
-    const { data: listener } = supabase.auth.onAuthStateChange((_event: string, session) => {
-      if (session) {
-        router.push("/");
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (_event: string, session: Session | null) => {
+        if (session) {
+          router.push("/");
+        }
       }
-    });
+    );
 
     return () => {
-      listener.subscription.unsubscribe();
+      subscription?.unsubscribe();
     };
   }, [router]);
 
